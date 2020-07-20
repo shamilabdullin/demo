@@ -18,7 +18,7 @@ public class FileServiceImpl implements FileService {
 
     private BlobContainerClient container;
     private ListBlobsOptions options;
-    private String STORAGE_PATH = System.getProperty("user.home") + "\\Downloads\\";
+    private String storagePath = System.getProperty("user.home") + "\\Documents\\";
 
     public FileServiceImpl(BlobServiceClient blobServiceClient, ListBlobsOptions options) {
         this.options = options;
@@ -28,12 +28,12 @@ public class FileServiceImpl implements FileService {
     @Override
     public File get(String fileName) {
 
-        var originalFileName = getOriginName(fileName);
+        var originalFileName = getFileName(fileName);
 
-        var path = STORAGE_PATH + originalFileName;
+        var path = storagePath + originalFileName;
         File file = new File(path);
         if (file.exists()) {
-            file.renameTo(new File(path.replace(path, STORAGE_PATH
+            file.renameTo(new File(path.replace(path, storagePath
                     + "(" + UUID.randomUUID().toString().substring(35)) + ")" + originalFileName));
         }
         container.getBlobClient(fileName).downloadToFile(path);
@@ -47,7 +47,7 @@ public class FileServiceImpl implements FileService {
             var fileName = UUID.randomUUID().toString();
             var blobClient = container.getBlobClient(fileName);
 
-            var path = STORAGE_PATH + fileName;
+            var path = storagePath + fileName;
             var targetFile = new File(path);
             Map<String, String> originMap = new HashMap<>();
 
@@ -65,7 +65,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public String getOriginName(String fileName) {
+    public String getFileName(String fileName) {
         var names = container.listBlobs(options, null)
                 .stream()
                 .filter(blob -> blob.getName().equals(fileName))
@@ -73,9 +73,8 @@ public class FileServiceImpl implements FileService {
                 .collect(Collectors.toList());
 
         if (names.size() == 0) {
-            throw new IllegalArgumentException("Incorrect file name, or file was removed");
+            throw new IllegalArgumentException("file was removed");
         }
-
         return names.get(0);
     }
 }

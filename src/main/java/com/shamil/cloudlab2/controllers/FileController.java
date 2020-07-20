@@ -33,7 +33,7 @@ public class FileController {
     @GetMapping("/download/{file_name}")
     public void getFile(@PathVariable("file_name") String fileName, HttpServletResponse response) {
         try {
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileService.getOriginName(fileName) + "\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileService.getFileName(fileName) + "\"");
             InputStream inputStream = new FileInputStream(fileService.get(fileName));
             IOUtils.copy(inputStream, response.getOutputStream());
             response.flushBuffer();
@@ -44,7 +44,7 @@ public class FileController {
 
     @GetMapping("/download/page/{file_name}")
     public String getFilePage(ModelMap map, @PathVariable("file_name") String fileName) {
-        map.addAttribute("fileName", fileService.getOriginName(fileName));
+        map.addAttribute("fileName", fileService.getFileName(fileName));
         map.addAttribute("link", fileName);
         return "downloadPage";
     }

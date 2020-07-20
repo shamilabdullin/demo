@@ -6,5 +6,5 @@ import java.io.File;
 public interface FileService {
     String save(MultipartFile file);
     File get(String fileName);
-    String getOriginName(String fileName);
+    String getFileName(String fileName);
 }
