@@ -46,6 +46,6 @@ public class FileController {
     public String getFilePage(ModelMap map, @PathVariable("file_name") String fileName) {
         map.addAttribute("fileName", fileService.getFileName(fileName));
         map.addAttribute("link", fileName);
-        return "downloadPage";
+        return "downloadFilePage";
     }
 }
