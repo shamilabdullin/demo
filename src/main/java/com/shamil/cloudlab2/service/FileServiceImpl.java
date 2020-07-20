@@ -21,15 +21,14 @@ public class FileServiceImpl implements FileService {
     private String storagePath = System.getProperty("user.home") + "\\Documents\\";
 
     public FileServiceImpl(BlobServiceClient blobServiceClient, ListBlobsOptions options) {
-        this.options = options;
         this.container = blobServiceClient.getBlobContainerClient("cloudlab-storage");
+        this.options = options;
     }
 
     @Override
     public File get(String fileName) {
 
         var originalFileName = getFileName(fileName);
-
         var path = storagePath + originalFileName;
         File file = new File(path);
         if (file.exists()) {
@@ -46,7 +45,6 @@ public class FileServiceImpl implements FileService {
         try {
             var fileName = UUID.randomUUID().toString();
             var blobClient = container.getBlobClient(fileName);
-
             var path = storagePath + fileName;
             var targetFile = new File(path);
             Map<String, String> originMap = new HashMap<>();
