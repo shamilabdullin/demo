@@ -18,7 +18,7 @@ public class FileServiceImpl implements FileService {
 
     private BlobContainerClient container;
     private ListBlobsOptions options;
-    private String storagePath = System.getProperty("user.home") + "\\Documents\\";
+    private String storagePath = System.getProperty("user.home") + "\\Downloads\\";
 
     public FileServiceImpl(BlobServiceClient blobServiceClient, ListBlobsOptions options) {
         this.container = blobServiceClient.getBlobContainerClient("cloudlab-storage");
